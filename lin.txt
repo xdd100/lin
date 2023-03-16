@@ -1,32 +1,27 @@
 UNIX : Uniplexed Information and Computing System.
+
 Est une famille de systèmes d'exploitation multitâche et multi-
 utilisateur.
+
 Le nom « UNIX » est une marque déposée de l'Open Group, qui autorise
 son utilisation pour tous les systèmes certifiés conformes.
 est une famille de systèmes d'exploitation open
 source (format libre) de type Unix fondé sur le noyau Linux
 
-
+UNIX et Linux sont deux systèmes d'exploitation similaires dans leur fonctionnement, mais il y a quelques différences notables :
+Source du code : Unix est un système d'exploitation propriétaire, tandis que Linux est un système d'exploitation open source.
+Coût : Unix est généralement plus coûteux que Linux, car il nécessite une licence d'utilisation, tandis que Linux est gratuit.
+Gestion des fichiers : Les systèmes de gestion de fichiers de Unix et Linux sont différents. Unix utilise UFS (Unix File System), tandis que Linux utilise Ext4 (Extended File System).
+Interface utilisateur : Les interfaces utilisateur de Unix et de Linux sont différentes, car elles sont développées par des entreprises différentes. Unix utilise généralement une interface de ligne de commande, tandis que Linux dispose de plusieurs environnements de bureau et d'interfaces graphiques.
+Matériel : Les versions d'Unix sont conçues pour fonctionner sur des ordinateurs spécifiques, tandis que Linux peut fonctionner sur une grande variété de matériels différents.
+Historique : Unix est un système d'exploitation plus ancien, qui remonte aux années 1970, tandis que Linux a été développé dans les années 1990.
 Distro: Red Hat, Debian, openSUSE, Fedora, Ubuntu,
 
-UNIX et Linux sont deux systèmes d'exploitation similaires dans leur fonctionnement, mais il y a quelques différences notables :
 
-Source du code : Unix est un système d'exploitation propriétaire, tandis que Linux est un système d'exploitation open source.
-
-Coût : Unix est généralement plus coûteux que Linux, car il nécessite une licence d'utilisation, tandis que Linux est gratuit.
-
-Gestion des fichiers : Les systèmes de gestion de fichiers de Unix et Linux sont différents. Unix utilise UFS (Unix File System), tandis que Linux utilise Ext4 (Extended File System).
-
-Interface utilisateur : Les interfaces utilisateur de Unix et de Linux sont différentes, car elles sont développées par des entreprises différentes. Unix utilise généralement une interface de ligne de commande, tandis que Linux dispose de plusieurs environnements de bureau et d'interfaces graphiques.
-
-Matériel : Les versions d'Unix sont conçues pour fonctionner sur des ordinateurs spécifiques, tandis que Linux peut fonctionner sur une grande variété de matériels différents.
-
-Historique : Unix est un système d'exploitation plus ancien, qui remonte aux années 1960, tandis que Linux a été développé dans les années 1990.
-
-/bin : contient les commandes binaires utilisateur essentielles pour tous les utilisateurs.
-/boot : contient les fichiers statiques du chargeur de lancement.
+/bin : répertoire contenant les principales commandes disponibles pour les utilisateurs
+/boot : répertoire contenant les fichiers de démarrage du système contenant le noyau
 /dev : contient les fichiers de périphériques.
-/etc : contient la configuration système spécifique à la machine.
+/etc : contient la configuration de systeme.
 /home : contient les répertoires personnels des utilisateurs (optionnel).
 /lib : contient les bibliothèques partagées essentielles et les modules du noyau.
 /mnt : est utilisé comme point de montage pour les systèmes de fichiers montés temporairement.
@@ -35,18 +30,222 @@ Historique : Unix est un système d'exploitation plus ancien, qui remonte aux an
 /sbin : contient les binaires système (les binaires qui étaient autrefois mis dans /etc).
 /sys : contient l'état des périphériques (model device) et des sous-systèmes (subsystems).
 /tmp : contient les fichiers temporaires.
+/usr : Ce répertoire est réservé pour l'utilisation du système.
+/var : répertoire contenant lesjournaux systèmes.
 
 
 
+Un fichier est une collection logique d’information. Un système de fichiers est une collection de fichiers.
+Une des fonctions d'un SE est de masquer les spécificités des disques et des autres périphériques
+d'entrées/sorties et d'offrir au programmeur un modèle de manipulation des fichiers agréable et
+indépendant du matériel utilisé.
+
+
+Organisation d’un disque dur:
+Master Boot Record|Partition Système|Partition Données
+
+
+FAT/FAT32/NTFS/exFAT/ext4
+
+. ------- le répertoire courant 
+.. ----- pour désigner le répertoire parent courant 
+~ ----- : pour désigner le répertoire personnel de l’utilisateur 
+
+
+chemin absolu: commence par /
+chemin relaif: ne commence pas par /
+
+TYPES DES FICHIERS:
+Les fichiers normaux
+Les fichiers répertoires (directories en Anglais)
+Les fichiers spéciaux
+Les fichiers liens symboliques
+
+
+d      rwxr-xr-x            7                   user1       group1    3080    Feb 2 04:07                   TP2
+Type   Autorisations        nombre de liens   Propriétaire  Groupe  Taille    Date de dernière modification  Nom du fichier
+
+
+Les I-nodes des fichiers
+Un fichier possède plusieurs informations, telles que le nom, le contenu et d’autres informations comme
+les permissions et les dates des dernières modifications. Ces informations sont sauvegardées dans
+-décrite dans /usr/include/sys/inode.h qui contient généralement les champs suivants :
+• le type du fichier (fichier ordinaire, spécial, répertoire,...).
+• les droits d’accès.
+• UID : le propriétaire du fichier.
+• GID : le group à lequel il appartient le propriétaire.
+• la date de dernière modification, la date du dernier accès, la date de création.
+• la taille du fichier en octets.
+• le nombre de liens (un lien d'un fichier est un autre nom de ce fichier),
+• les éléments d'identification du propriétaire et de son groupe,
+• l'adresse physique d'implantation sur disque.
+Remarques :
+o Tout fichier possède son unique i-node.
+o L'i-node contient la totalité des informations sur le fichier, sauf le nom.
+o Les i-nodes sont tous de même taille.
 
 
 
+r : lecture (permet d'explorer ou voir le contenu d'un répertoire ou d'un fichier)
+w : écriture (permet d'ajouter ou supprimer des fichiers ou de modifier le contenu d'un fichier)
+x : exécution (permet d'autoriser l'accès à un répertoire ou d'exécuter un fichier)
+
+------------FIND-------------------
+
+-name motif
+Recherche par nom de fichier. Le motif peut utiliser les caractères
+génériques du Shell ?, *, [ ]
+
+-type type
+Recherche par type de fichier. f pour le fichier ordinaire, d pour les
+répertoires, b pour lesfichiersspéciaux en mode bloc, c pour lesfichiers
+spéciaux en mode caractère, l pour les liens symboliques.
+
+-user utilisateur
+Recherche par propriétaire. Le propriétaire desfichierstrouvés doit être
+l'utilisateur référencé.
+
+-group groupe
+Recherche par groupe. Les propriétaires des fichiers trouvés doivent
+être des membres du groupe référencé.
+
+-size [+/-]n
+Recherche partaille de fichier. La taille du fichier est exprimée en blocs
+(512octets).Si aprèslataillej'ajoutele caractèrec,la taille seraexprimée
+en octets. Exemple : -size 50c
+
+-atime [+/-]n Recherche par date du dernier accès.
+-mtime [+/-]n Recherche par date de la dernière modification.
+-ctime [+/-]n Recherche par date de création.
 
 
 
+-perm mode
+Recherche par autorisations d’accès. Recherche les fichiers dont le
+mode de permission est égal au mode référencé.
+
+-perm –mode
+Recherche par autorisations d’accès. Recherche les fichiers qui ont au
+moins les autorisations décrite le mode.
+
+-links [+/-]n 
+Recherche par nombre de liens pour les fichiers.
+
+-inum [+/-]n 
+Recherche par numéro d’index pour les fichiers.
+
+-newer nomfichier
+Recherche des fichiers plus récents que le fichier passé en référence
+(nomfichier).
+
+
+La notation [+/-]n indique un entier ayant les 3 formes suivantes:
+• +n : indique que toute valeur supérieure à n est valide.
+• n : indique que la valeur doit être exactement égale à n.
+• -n : indique que toute valeur inférieure à n est valide.
+
+On peut combiner les critères avec des opérateurs logiques :
+• critère1 critère2 ou critère1 -a critère2 correspond au et logique,
+• !critère non logique,
+• \(critère1 -o critère2\) ou logique,
+
+find est recursive
+
+L’option –print
+La commande find doit être utilisée avec l'option -print.
+
+L’option –exec
+L’option –exec permet d’exécuter une commande surlesfichiers qui vérifient les critères de
+sélection.
+-exec commande {} \;
+
+-----------------------------------------------------------------------------------------------
+
+regex grep:
+^ début de ligne
+- . un caractère quelconque
+- $ fin de ligne
+- x* zéro ou plus d'occurrences du caractère x
+- x+ une ou plus occurrences du caractère x
+- x? une occurrence unique du caractère x
+- [...] plage de caractères permis
+- [^...] plage de caractères interdits
+\{n\} pour définir le nombre de répétition n du caractère placé devant
+* Le * est un signe de répétition. Il agitsurle caractère placé devant l’étoile. Exemple :
+
+^ Quandlesigne^estplacéaudébutdumodèle_de_critère,greprechercheleslignesqui
+commencent par les chaînes de caractères décrites par le modèle_de_critère.
+
+$ Placé en fin du modèle de critère, il désigne une fin de ligne.
+\ Suivi d’un autre caractère, il désigne ce caractère. Il permet d’enleverle sensspécial
+
+des caractères * . \ [ ] $.
+
+^ab : désigne la chaîne ab placée en début de ligne.
+[0-9] : désigne un chiffre quelconque.
+[adh-lA-Z] : désigne la lettre a ou la lettre d ou une lettre minuscule entre h et l, ou une
+lettre majuscule.
+[^0-9] : désigne un caractère qui n’est pas un chiffre.
+^\. : désigne une ligne qui commence par un point.
+--------------------------------------CUT-------------------------------------------------
+Cette liste indique quels seront les caractères qui seront conservés sur chaque ligne.
+- une colonne individuelle (par exemple –c5)
+- une plage de colonnes (par exemple -c3-10 ou –c8-)
+- une liste de chiffres séparés par des virgules (par exemple –c3,7,9)
+- une combinaison des trois formes précédentes (par exemple -c1-3,7,20-)
+
+Exemples
+1, 3, 8 : désigne les caractères dans les positions 1, 3 et8.
+2-5 , 10 : désigne les caractères dans les positions entre 2 et 5 et la position10.
+-5, 8 : désigne les caractèressitués dansles positions de 1 à 5 et la positions 8.
+3- : désigne les caractères de la position n°3 jusqu’à la fin de la ligne.
+---------------------------------------------------------------------------------------------------------
 useradd
 usermod
 userdel
+passwd
+
+date
+sudo -i
+more
+file
+ln
+mv
+rm
+du
+wc
+cat
+head/tail
+uniq
+sort
+tr
+cut
+diff
+cmp
+free
+
+find/locate (-print - exec- -ok)
+grep
+
+droits pars defauts: 666 fichier / 777 repertoires
+chmod
+umask
+chown
+chgroup
+----------------------------
+mot de passe stockeé dans /etc/shadow forme crypte en SHA
+cat /etc/group: GID de grouo
+cat /etc/passwd: UID/GID de user
+2>&1 : capturer la sortie standard et sortie d'erreur
+on peut utiliser NTFS/FAT
+shell par defaut: bash
+>> append
+> overwrite
+<
+echo << a boucle break si a
+
+--------------------------------
+
 
 
 
