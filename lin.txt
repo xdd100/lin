@@ -1,1 +1,63 @@
 UNIX : Uniplexed Information and Computing System.
+Est une famille de systèmes d'exploitation multitâche et multi-
+utilisateur.
+Le nom « UNIX » est une marque déposée de l'Open Group, qui autorise
+son utilisation pour tous les systèmes certifiés conformes.
+est une famille de systèmes d'exploitation open
+source (format libre) de type Unix fondé sur le noyau Linux
+
+
+Distro: Red Hat, Debian, openSUSE, Fedora, Ubuntu,
+
+UNIX et Linux sont deux systèmes d'exploitation similaires dans leur fonctionnement, mais il y a quelques différences notables :
+
+Source du code : Unix est un système d'exploitation propriétaire, tandis que Linux est un système d'exploitation open source.
+
+Coût : Unix est généralement plus coûteux que Linux, car il nécessite une licence d'utilisation, tandis que Linux est gratuit.
+
+Gestion des fichiers : Les systèmes de gestion de fichiers de Unix et Linux sont différents. Unix utilise UFS (Unix File System), tandis que Linux utilise Ext4 (Extended File System).
+
+Interface utilisateur : Les interfaces utilisateur de Unix et de Linux sont différentes, car elles sont développées par des entreprises différentes. Unix utilise généralement une interface de ligne de commande, tandis que Linux dispose de plusieurs environnements de bureau et d'interfaces graphiques.
+
+Matériel : Les versions d'Unix sont conçues pour fonctionner sur des ordinateurs spécifiques, tandis que Linux peut fonctionner sur une grande variété de matériels différents.
+
+Historique : Unix est un système d'exploitation plus ancien, qui remonte aux années 1960, tandis que Linux a été développé dans les années 1990.
+
+/bin :commandes binaires utilisateur essentielles (pour tous les utilisateurs)
+/boot :fichiers statiques du chargeur de lancement
+/dev :fichiers de périphériques
+/etc :configuration système spécifique à la machine
+/home :répertoires personnels des utilisateurs (optionnel)
+/lib :bibliothèques partagées essentielles et modules du noyau
+/mnt :point de montage pour les systèmes de fichiers montés temporairement
+/proc :système de fichiers virtuel d'information du noyau et des processus
+/root :répertoire personnel de root (optionnel)
+/sbin :binaires système (binaires auparavant mis dans /etc)
+/sys :état des périphériques (model device) et sous-systèmes (subsystems)
+/tmp : fichiers temporaires
+
+
+
+
+
+
+
+
+
+useradd
+usermod
+userdel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
