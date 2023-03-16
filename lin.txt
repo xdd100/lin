@@ -23,18 +23,18 @@ Matériel : Les versions d'Unix sont conçues pour fonctionner sur des ordinateu
 
 Historique : Unix est un système d'exploitation plus ancien, qui remonte aux années 1960, tandis que Linux a été développé dans les années 1990.
 
-/bin :commandes binaires utilisateur essentielles (pour tous les utilisateurs)
-/boot :fichiers statiques du chargeur de lancement
-/dev :fichiers de périphériques
-/etc :configuration système spécifique à la machine
-/home :répertoires personnels des utilisateurs (optionnel)
-/lib :bibliothèques partagées essentielles et modules du noyau
-/mnt :point de montage pour les systèmes de fichiers montés temporairement
-/proc :système de fichiers virtuel d'information du noyau et des processus
-/root :répertoire personnel de root (optionnel)
-/sbin :binaires système (binaires auparavant mis dans /etc)
-/sys :état des périphériques (model device) et sous-systèmes (subsystems)
-/tmp : fichiers temporaires
+/bin : contient les commandes binaires utilisateur essentielles pour tous les utilisateurs.
+/boot : contient les fichiers statiques du chargeur de lancement.
+/dev : contient les fichiers de périphériques.
+/etc : contient la configuration système spécifique à la machine.
+/home : contient les répertoires personnels des utilisateurs (optionnel).
+/lib : contient les bibliothèques partagées essentielles et les modules du noyau.
+/mnt : est utilisé comme point de montage pour les systèmes de fichiers montés temporairement.
+/proc : contient un système de fichiers virtuel d'information du noyau et des processus.
+/root : contient le répertoire personnel de l'utilisateur root (optionnel).
+/sbin : contient les binaires système (les binaires qui étaient autrefois mis dans /etc).
+/sys : contient l'état des périphériques (model device) et des sous-systèmes (subsystems).
+/tmp : contient les fichiers temporaires.
 
 
 
