@@ -1,0 +1,985 @@
+
+2.10 Commandes shell de manipulations de fichiers
+Une commande, dans le sens plus général, est un fichier exécutable.
+2.10.1 La commande pwd (print working directory)
+Lorsqu'un utilisateurse connecte à une station Unix, il est placé dans un répertoire personnel, en
+général situé dans le répertoire /home. La commande pwd affiche le chemin d'accès au
+répertoire courant.
+2.10.2 La commande cd (change directory)
+Cette commande permet de changer le répertoire courant. Sans argument cd permet de se déplacer versle
+répertoire de connexion. cd [chemin]
+Exemples
+cd ~ et cd ramènent dans le répertoire de connexion.
+cd . : ne change pas le répertoire courant.
+cd .. : permet de se déplacer versle répertoire parent.
+cd / : il permet de se déplacer vers la racine.
+2.10.3 La commande ls (list files)
+ls [-options] chemin
+Le chemin est un nom de fichier ou de répertoire. Si c’est un fichier, ls permet d’afficher sa description.
+Si c’est un répertoire, elle affiche son contenu. Sans arguments, le répertoire courant est traité. Les
+options de ls sont :
+• -l : format long (types de fichier, droits, nombre de liens, propriétaire, groupe, taille en octets,
+date de la dernière modification, nom du fichier).
+• -a : liste tous les fichiers (y compris les fichiers qui commencent par le point : fichiers cachés).
+• -F : format court avec indication du type de fichier (ajoute * si exécutable, / si répertoire).
+• -i : affiche les numéros d’Inode des fichiers.
+• -R : récursif, génère la liste de tout les fichiers du sous-arbre tout entier.
+• -r : trie en ordre inverse.
+• -d : si l’argument est un répertoire, la commande affiche son nom.
+Remarque
+Certains caractères, appelés méta caractères, sont interprétés spécialement par le Shell avant de lancer la
+commande entrée par l’utilisateur.
+Par exemple, si l’on entre ls *.c, le Shell remplace l’argument *.c par la liste des fichiers du répertoire
+courant dont le nom se termine par .c.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+Les métacaractères permettent donc de spécifier facilement des ensembles de fichiers,sans avoir à rentrer
+tous leurs noms. Voici les plus utilisés :
+• * remplacé par n’importe quelle suite de caractères.
+• ? remplacé par un seul caractère quelconque.
+• [ ] remplacé par l’un des caractères mentionnés entre les crochets. On peut spécifier
+un intervalle avec - : [a-z] spécifie donc l’ensemble des lettresminuscules.
+
+Exemple
+ls *.[a-z].*
+hel.l.o a.m.a
+ls [hg]*
+ger hello
+2.10.4 La commande cat
+La commande cat affiche lesfichiersl’un aprèsl’autre surla sortie standard(écran). Si aucunargument
+n’estspécifié,litsurl’entrée standard(clavier)jusqu’à rencontrer uncaractère findefichierCTRL^D.
+Exemple
+cat fich.txt : cette commande permet d’afficher sur l’écran le contenu du fichier fich.txt
+catfich1 fich2 : cette commande permet d’affichersur écran le contenu des deux fichiersfich1 etfich2
+(Concaténer deux fichiers).
+2.10.5 La commande more
+La commande more [fichier...] permet d’afficher le contenu d’un fichier page à page.
+2.10.6 La commande touch (créer des fichiers vides)
+Créerlesfichiersf1.txt etf2.txtsous votre répertoire de travail en utilisant la commande
+suivante :
+
+touch f1.txtf2.txt
+Donner la commande qui permet de vérifier que les fichiers sont créés. Comment on peut
+vérifier que les fichiers sont vides ?
+
+2.10.7 La commande file (type de fichier)
+Il est possible sous Unix de connaître aussi le type de fichier sur lequel on travaille. Tous les fichiers
+ont un entête permettant de déterminer leur type (répertoire, exécutable, texte ASCII, programme C,
+document...). La commande file permet de visualiser le type du fichier enquestion.
+file nom_de_fichier
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+
+Exemple:
+file toto.c
+toto.c: c program text
+2.10.8 La commande mv (move)
+Cette commande permet de déplacer un fichier mv [–i] source destination
+Si « destination » est un répertoire, la commande mv déplace le fichier de nomsource vers « destination ».
+Si « destination » est un nom de fichier, la commande mv renomme le fichier de nom source.
+L’option mv -i permet de demander confirmation en cas d’écrasement de la destination.
+2.10.9 La commande ln (link)
+Cette commande permet de créer deslienssur desfichiers. Leslienssont desfichiersspéciaux permettant
+d'associer plusieurs noms(liens) à un seul etmême fichier. Ce dispositif permet d'avoir plusieursinstances
+d'un même fichier en plusieurs endroits de l'arborescence sans nécessiter de copie, ce qui permet
+notamment d'assurer un maximum de cohérence et d'économiser de l'espace disque. On distingue deux
+types de liens :
+❖ Leslienssymboliquesreprésentant despointeurs virtuels(raccourcis) vers desfichiersréels.
+En cas de suppression du lien symbolique le fichier pointé n'est passupprimé. Lesliens
+symboliques sont créés à l'aide de la commande ln -s selon la syntaxe suivante :
+ln -s nom-du-fichier-reel nom-du-lien-symbolique
+ln –s fichier1 /titi/lien
+ls –i fichier1 /titi/lien
+6341 fichier1 4230 /work/liensym
+ls -l /titi/lien
+4230 lrwxrwxrwx 1 ..................../titi/liensym fichier1
+Si on supprime le fichier de nom fichier1 : rm fichier1
+Puis on fait ls -i fichier1 /titi/lien on aura :
+fichier1 not found
+4230 /titi/lien
+Si on fait cat /titi/lien on aura :
+cat : il n y a pas un fichier ou un répertoire de ce type.
+❖ Les liens physiques (ou liens durs) représentent un nom alternatif pour un fichier c’est
+lacréation de deux ou plusieurs noms vers une inode unique au moyen de la commande ln. Ainsi,
+lorsqu'un fichier possède deux liens physiques, la suppression de l'un ou l'autre de ces liens
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+
+n'entraîne pas la suppression du fichier. Plus exactement, tant qu'il subsiste au minimum un lien
+physique, le fichier n'est pas effacé maislorsque l'ensemble desliens physiques d'unmême fichier
+est supprimé, le fichier est aussi supprimé. Il faut noter toutefois qu'il n'est possible de créer des
+liens physiques qu'au sein d'un seul et même système de fichiers. Lesliens physiquessont créés à
+l'aide de la commande ln selon la syntaxe suivante :
+ln nom-du-fichier-reel nom-du-lien-physique
+
+Lors de la création d’un lien physique il n'y a ni copie du fichier, ni création d'un nouvel i-node, mais
+simplement augmentation du compteur de référence du fichier dans un répertoire.
+
+Les deux fichiers partent verslemême numéro d’index (numéro d’inode), ce qui veut dire qu’il y a un seul
+espace disque associé aux deux noms.
+
+2.10.10 La commande cp
+cp [-options] source destination
+Si « destination » est un répertoire, la commande cp copie le ou lesfichier(s)source vers « destination ». Si
+« destination » est un nom de fichier, la commande cp renomme le fichier de nom source.
+ls -li fichier1
+6341 -rw-rw-r-- 1 ....................fichier1
+ln fichier1 /titi/liendur
+$ls –li fichier1 /titi/liendur
+6341 -rw-rw-r-- 2.................... fichier1
+6341 -rw-rw-r-- 2 .................... /titi/liendur
+
+Si on déplae le fihier1 :
+mv fichier1 fichier2
+puis on fait :
+ls -li fichier2
+on aura :
+6341 -rw-rw-r-- 2.................... fichier2
+Si on supprime fichier2 :
+rm fichier2
+puis on fait :
+ls -li fichier2 /titi/liendur
+On aura :
+fichier2 not found
+6341 -rw-rw-r-- 1 ..................../titi/liendur
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+Si on effectue une copie d'un fichiersur un fichier qui existe déjà, celui-cisera écrasé etremplacé parle
+nouveau fichier, certaines options de cp peuvent nous éviter de pareillessituations. On site dans ce qui
+suit quelques options :
+• cp -i : avertit l'utilisateur de l'existence d'un fichier du même nom et lui demande s'il peut ou non
+remplacer son contenu.
+• cp -b : permet également de s'assurer que la copie n'écrase pas un fichier existant : le fichier écrasé
+est sauvegardé, seul le nom du fichier d'origine est modifié et cp ajoute une tilde (~) à la fin du
+nom du fichier.
+• cp -p : permet lors de la copie de préserver toutesles informations concernant le fichier comme le
+propriétaire, le groupe, la date de création.
+• cp -r : permet de copier de manière récursive un répertoire et ses sous-répertoires.
+2.10.11 La commande rm (remove file)
+La commande rm est utilisée pour supprimer un fichier : rm [-options] fichier(s)
+Ses principales options sont :
+• rm -i : permet de demander à l'utilisateur s'il souhaite vraiment supprimer le ou les fichiers
+en question.
+• rm -r : agit de façon récursive, c’est à dire détruit aussi les répertoires (pleins ou vide) et leurs
+sous-répertoires.
+• rm -f : permet de supprimer les fichiers protégés en écriture et répertoires sans que le prompt
+demande une confirmation de suppression.
+2.10.12 La commande mkdir (make directory)
+Cette commande permet de créer un répertoire mkdir [-options] répertoire
+Le chemin peut être :
+• relatif (par exemple mkdir ../poly)
+• absolu (par exemple mkdir /home/salem/poly/cours)
+Une option de mkdir qui est souvent utile est mkdir –p elle permet de créer une suite de répertoires.
+Exemple
+
+2.10.13 La commande rmdir (remove directory)
+Cette commande permet de supprimer un répertoire vide rmdir [-options] répertoire(s)
+mkdir –p cours/tp/rsi21
+#crée le sous-répertoire rsi21 qui se trouve dans le sous-répertoire tp qui se trouve dans le répertoire
+#cours.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 14
+L’options -i permet de demander à l'utilisateur s'il souhaite vraiment supprimer le ou les répertoires en
+question.
+2.10.14 Droits d’accès et la commande chmod
+Parmi les informations contenues dans l’inode de tout élément de l’arborescence, on trouve les droits
+d’accès. La protection d’un élément repose sur trois droits d’accès qui contrôlent les trois opérations de
+lecture (droit r pour read), d’écriture (droit w pour write) et d’exécution (droit x pour execute). Ces trois
+droits (rwx) sont appliqués à trois catégories d’utilisateurs qui sont le propriétaire (user : u) de l’élément,
+son groupe (group : g) et les autres utilisateurs (others : o).
+La notion de groupe correspond simplement à un ensemble d’utilisateurs auxquels on peut attribuer les
+mêmes droits d’accès aux fichiers. Ainsi, chaque utilisateur appartient à un groupe et son identité qui sert
+pour les contrôles d’accès est définie par un numéro d’utilisateur (UID : User IDentification) et un
+numéro de groupe (GID : Group IDentification).
+Tout système a besoin de comptes spécialisés, avec des droits importants, pour des tâches
+d’administration. Sous UNIX, il existe un compte root dit compte de super-utilisateur, caractérisé par
+son numéro d’utilisateur (l’UID zéro) qui lui confère les pleins pouvoirs.
+La signification desdroits diffère selonle type de l’élément:répertoire oufichier
+Code Répertoires Fichiers
+r : lecture Explorer Voir le contenu
+w : écriture Ajouter ou supprimer des fichiers Modifier le contenu
+x : exécution Autorise l'accès au répertoire Exécuter
+La commande chmod possède deux formes : numérique et symbolique.
+❖ Forme symbolique
+
+chmod [ugoa] [+|-|=] [rwx] fichier
+
+La syntaxe symbolique précise au moyen d'une simple lettre la catégorie des utilisateurs concernés par la
+nouvelle protection :
+• u pour user, propriétaire du fichier,
+• g pour group, les utilisateurs du même groupe que le propriétaire,
+• pour others pour les autres utilisateurs,
+• a pour all, pour les 3 catégories des utilisateurs. Cette option est utile quand une même
+protection doit être définie vis-à-vis des 3 catégories des utilisateurs.
+La syntaxe symbolique utilise l’opérateur + pour ajouter et - pour enlever ou = pour réassigner un droit
+d'accès. Lorsque l'opérateur = est utilisé, les types d'accès énumérés sont autorisés et les autres non
+mentionnés sont supprimés.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 15
+La syntaxe symbolique exige aprèsl'opérateur que soient énumérées deslettres précisantlestypes d'accès à
+autoriser ou interdire. Le débutant se contentera d'utiliser r pour la lecture, w pour l'écriture et x pour
+l'exécution.
+Exemples
+• chmod g+w titi permet aux utilisateurs du groupe du propriétaire du fichier titi d'accéder en
+plus à l'écriture.
+• chmod a=r toto autorise uniquement l'ensemble des utilisateurs à accéder au fichier toto en
+lecture seule. Si l'accès en écriture était autorisé, ce droit est supprimé.
+• chmod ug-wtata interdit dorénavant au propriétaire etson groupe de tenter une modification du
+fichier tata.
+❖ Forme numérique
+
+chmod mode fichier
+
+La commande chmod peut être utilisée avec un masque composé de 3 chiffres en octal. Les bits de ce
+masque autorisent les types d'accès correspondants avec la même relation entre poids des bits et types
+d'accès.
+• Le bit de poids 4 autorise les accès en lecture,
+• le bit de poids 2 autorise les accès en écriture
+• le bit de poids 1 autorise les accès en exécution.
+Exemple :
+chmod 750 toto
+permet, pour le fichier toto, d'autoriser n'importe quel type d'accès de la part du propriétaire, de limiter les
+accès des utilisateurs du même groupe que le propriétaire en lecture et exécution, d'interdire tout type
+d'accès émanant des autres utilisateurs.
+Exemples
+
+2.10.15 La commande umask
+La commande umask permet de définir un masque de protection des fichiers lors de leur création. Cette
+commande se trouve dans le fichier .bashrc et elle peut être exécutée à tout moment. Le masque défini
+doit être codé en base 8.
+Quand vous créer un fichier, par exemple avec la commande touch, ce fichier par défaut possède certains
+droits. Ce sont 666 pour un fichier (-rw-rw-rw-) et 777 pour un répertoire (-rwxrwxrwx), ce sont les
+chmod 644 titi
+chmod 622tata
+
+permet d’allouerles droits d’accèssuivants:-rw-r—r—
+permetd’allouerlesdroitsd’accèssuivants:-rw—w-w-
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 16
+droits maximum. Vous pouvez faire en sorte de changer ces paramètres par défaut. La commande
+umask est là pour ça.
+❖ Pour un fichier :
+Si vous tapez umask 022, vous partez des droits maximum 666 et vous retranchez 022, on obtient
+donc 644, par défaut les fichiers auront comme droit644(-rw-r-r--).
+Si vous tapez umask 244, vous partez des droits maximum 666 et vous retranchez 244, on obtient
+donc 422, par défaut les fichiers auront comme droit422(-r---w--w-).
+❖ Pour un répertoire :
+Si vous tapez umask 022, vous partez des droits maximum 777 et vous retranchez 022, on obtient
+donc 755, par défaut les fichiers auront comme droit644 (-rwxr-xr-x).
+Si vous tapez umask 244, vous partez des droits maximum 777 et vous retranchez 244, on obtient
+donc 533, par défaut les fichiers auront comme droit422(-rwx-wx-wx).
+umask n'est utilisatable que si on est propriétaire du fichier.
+Calcul de : (0666)8 AND NOT (0022)8 pour lesfichiers
+(0022)8 = (000 010 010)2
+NOT (0022)8 = (111 101 101)2
+(0666)8 AND NOT (0022)8 = (110 100 100) 2
+(0666)8 AND NOT (0022)8 = (0644)8
+Calcul de : (0777)8 AND NOT (0022)8 =(0755)8 pour les répertoires
+2.10.16 La commande chown
+Change le propriétaire desfichiersspécifiés en argument. Seulsle propriétaire et l’administrateur peuvent
+effectuer cette opération.
+
+chown login fichiers
+
+Exemples
+ls -l TP.doc
+-rw-r--r-- 1 salem poly 432 Feb 22 12:42 TP.doc
+chown TRABELSI TP.doc
+ls –l TP.doc
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 17
+-rw-r--r-- 1 TRABELSI poly 432 Feb 2212:42 TP.doc
+2.10.17 La commande chgrp
+Cette commande permet d’attribuer les fichiers donnés en argument à un nouveau groupe d’utilisateurs.
+
+chgrp groupe fichiers
+
+Exemples
+
+2.10.18 La commande find
+La commande find parcourt les répertoires et les sous-répertoires de manière récursive à la
+recherche de fichiers. find doit disposer de 3 indications :
+- à partir de quel répertoire la recherche doit-elle commencer ? (obligatoire)
+- quels sont les critères de recherche à mettre en œuvre ? (non obligatoire)
+- que doit-il se passer si un fichier répond à ce(s) critère(s) ? (obligatoire)
+Syntaxe
+find répertoire(s) critère_de_sélection option(s)
+Si on n’indique pas un critère de recherche, l’ensemble des fichiers placés sous le répertoire de
+départ sera considéré comme répondant à la recherche et sera donc sélectionné. Le
+critère_de_sélection permet d’extraire une partie de cesfichiers à partir de l’ensemble.
+La commande find a de nombreuses options de sélection qui permettent de rechercher les
+fichiers qui vérifient certains critères. En voici quelques-unes :
+Tableau : Critères de sélection de la commande find
+
+Critère Signification
+-name motif
+
+Recherche par nom de fichier. Le motif peut utiliser les caractères
+génériques du Shell ?, *, [ ]
+
+-type type
+
+Recherche par type de fichier. f pour le fichier ordinaire, d pour les
+répertoires, b pour lesfichiersspéciaux en mode bloc, c pour lesfichiers
+spéciaux en mode caractère, l pour les liens symboliques.
+
+ls –l tp.doc
+-rw-r--r-- 1 salem poly 432 Feb 22 12:42 tp.doc
+chgrp polytec tp.doc
+ls –l tp.doc
+-rw-r--r-- 1 salem polytec 432 Feb 22 12:42 tp.doc
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 18
+-user utilisateur
+
+Recherche par propriétaire. Le propriétaire desfichierstrouvés doit être
+l'utilisateur référencé.
+
+-group groupe
+
+Recherche par groupe. Les propriétaires des fichiers trouvés doivent
+être des membres du groupe référencé.
+
+-size [+/-]n
+
+Recherche partaille de fichier. La taille du fichier est exprimée en blocs
+(512octets).Si aprèslataillej'ajoutele caractèrec,la taille seraexprimée
+en octets. Exemple : -size 50c
+-atime [+/-]n Recherche par date du dernier accès.
+-mtime [+/-]n Recherche par date de la dernière modification.
+-ctime [+/-]n Recherche par date de création.
+-perm mode
+
+Recherche par autorisations d’accès. Recherche les fichiers dont le
+mode de permission est égal au mode référencé.
+
+-perm –mode
+
+Recherche par autorisations d’accès. Recherche les fichiers qui ont au
+moins les autorisations décrite le mode.
+-links [+/-]n Recherche par nombre de liens pour les fichiers.
+-inum [+/-]n Recherche par numéro d’index pour les fichiers.
+-newer nomfichier
+
+Recherche des fichiers plus récents que le fichier passé en référence
+(nomfichier).
+
+La notation [+/-]n indique un entier ayant les 3 formes suivantes:
+• +n : indique que toute valeur supérieure à n est valide.
+• n : indique que la valeur doit être exactement égale à n.
+• -n : indique que toute valeur inférieure à n est valide.
+
+On peut combiner les critères avec des opérateurs logiques :
+• critère1 critère2 ou critère1 -a critère2 correspond au et logique,
+• !critère non logique,
+• \(critère1 -o critère2\) ou logique,
+La commande find estrécursive, c'est à dire où que voustapiez, il va allerscruter dansles
+répertoires, et les sous répertoires qu'il contient, et ainsi de suite.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 19
+L’option –print
+La commande find doit être utilisée avec l'option -print. Sans l'utilisation de cette option, même
+en cas de réussite dans la recherche, find n'affiche rien à la sortie standard (l'écran, plus
+précisément le shell). La commande find estrécursive, c'est à dire où que voustapiez, elle va aller
+scruter dans les répertoires, et les sous répertoires qu'il contient, et ainsi de suite.
+Exemple :
+
+Cette commande a permis d’affichertoute la liste desfichiers du répertoire courant de façon
+récursive. C’est la plus simple ligne de commande utilisant find.
+L’option –exec
+L’option –exec permet d’exécuter une commande surlesfichiers qui vérifient les critères de
+sélection.
+-exec commande {} \;
+Exemples :
+La commande suivante permetde rechercherlesfichiersordinairesde l’arborescence du
+répertoire courant qui ont une taille égale à 0 etsupprimer chacun desfichierstrouvés.
+
+La commande suivante permet de rechercher les répertoires de l’arborescence de mon répertoire
+de connexion tel que le propriétaire est l’utilisateursalem, et appliquer à touslesrépertoires
+trouvés un permission = 700.
+$find ~ –type d -user salem -exec chmod 700 {} \;
+$find -print
+.
+./fic1
+./fic2
+./rep1
+./rep1/fich2
+./rep1/document
+
+$find –type f -size 0 -exec rm {} \;
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 20
+a commande suivante permet de rechercherlesfichiers ordinaires de l’arborescence demon
+répertoire courant dont le nom se termine par .tmp, et copier chaque fichier trouvé dans le
+répertoire /tmp.
+$find –type f -name “*.tmp” -exec cp /tmp {} \;
+L’option –ok
+A la différence de l’option –exec, l’option –ok effectue la même chose mais en demandant
+confirmation de l’utilisateur avant l’exécution de la commande.
+-ok commande {} \;
+Exemples
+La commande suivante recherche dansle répertoire courant lesfichiers dont le nom commence
+par p et se termine .c
+find . –name "p*.c" -print
+La commande suivante recherche dansle répertoire courantlesfichiers ordinaires ayant un
+numéro d'index > 13230 et affiche chaque fichier trouvé avec son numéro d'index.
+find . –type f –inum +13230 -exec ls –i {} \;
+La commande suivante affiche lesfichiers de l’arborescence du répertoire /home qui ont été
+modifié dans les dix derniersjours.
+find /home -mtime -10 -print
+Lacommandesuivanteaffichelesrenseignementsdétailléssurlesfichiersdel’arborescencedu
+répertoire /users qui appartiennent à toto et qui ont été modifié dans les dix derniers jours.
+find /users –user toto –mtime -10 –exec ls –ld {} \;
+Lacommandesuivanteaffichelesrenseignementsdétailléssurlesfichiersdel’arborescencedu
+répertoire de connexion de l’utilisateur salem et qui appartiennent à salem.
+find /home/salem ! –user salem –exec ls –ld {} \;
+La commande suivante affiche les renseignements détaillés sur les fichiers ordinaires
+l’arborescence du répertoire courant qui ont aumoinsla permission 400, c'est-à-dire aumoinsle
+propriétaire a le droit de lecture du fichier.
+find –type f –perm -400 –exec ls –ld {} \;
+La commande suivante affiche lesfichiers de l’arborescence du répertoire courant et quise
+terminent par .c ou par .java.
+find .\(-name “*.c” –o –name “*.java”\) –print
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 21
+Lacommandesuivantesupprimeaprèsconfirmationparl’utilisateurlesfichiersordinaires
+l’arborescence du répertoire courant et qui sont vides.
+find . –type f –size 0 –ok rm {} \;
+2.10.19 La commande grep
+La commande grep permet de rechercher une chaîne de caractères dans un fichier. Les options sont les
+suivantes :
+• -v affiche les lignes ne contenant pas la chaîne
+• -ccomptelenombredelignescontenantlachaîne
+• -nchaquelignecontenantlachaîneestnumérotée
+• -x ligne correspondant exactement à la chaîne
+• -l affiche le nom des fichiers qui contiennent la chaîne
+Remarque
+On a vu auparavant ce qu'étaient les méta caractères. Les expressions régulières sont aussi des suites de
+caractères permettant de faire des sélections. Elles fonctionnent avec certaines commandes comme grep.
+Les différentes expressions régulières sont :
+- ^ début de ligne
+- . un caractère quelconque
+- $ fin de ligne
+- x* zéro ou plus d'occurrences du caractère x
+- x+ une ou plus occurrences du caractère x
+- x? une occurrence unique du caractère x
+- [...] plage de caractères permis
+- [^...] plage de caractères interdits
+\{n\} pour définir le nombre de répétition n du caractère placé devant
+Exemples :
+- l'expression grep [a-z][a-z] * cherche les lignes contenant au minimum un caractère en
+minuscule. [a-z] caractère permis, [a-z]* recherche d'occurrence des lettres permises. L'expression
+^[0-9]\ {4\}$ a pour signification, du début à la fin du fichier $, recherche les nombres[0-9] de 4
+chiffres \{4\}.
+- Exemple avec le fichier carnet-adresse :
+olivier:29:0298333242:Brest
+marcel:13:0466342233:Gardagnes
+myriam:30:0434214452:Nimes
+yvonne:92:013344433:Palaiseau
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 22
+si on tape grep ^[a-] carnet-adresse
+On va obtenir tous les lignes commençant par les caractères compris entre a et d. Dans notre exemple, on
+aura :
+marcel:13:0466342233:Gardagnes
+myriam:30:0434214452:Nimes
+la commande grep Brest carnet-adresse Permet d'obtenir les lignes contenant la chaîne de caractère Brest,
+soit : olivier:29:0298333242:Brest
+2.11 Les Filtres
+
+Un filtre est un programme qui sait écrire et lire des données par les canaux standard d’entrée et
+de sortie (lit les données du clavier et retourne un résultat à l’écran). Il peut aussi agir sur les
+données d’un fichier donné en paramètre.
+2.11.1 Recherche dans les fichiers : la commande grep
+La commande grep lit les données,soit parle canal d’entrée standard,soit directement dans un
+fichier. Cette commande affiche surl’écran leslignes desfichiers qui contiennent une chaîne de
+caractères correspondante à l’expression régulière spécifiée dansla ligne de commande parle
+paramètremodèle_de_critére.Autrement dit,lemodèle_de_critère définitleslignes à trouver. Le
+modèle peut contenir des caractères spéciaux définis dans le second tableau.
+Syntaxe
+grep [options] modèle_de_critère [fichier1...]
+Options
+
+Tableau: Options de la commande grep
+-v Affiche seulement les lignes qui ne contiennent pas la chaîne.
+-c La commande ne retourne que le nombre de lignes contenant la chaîne maissans afficher
+ces lignes.
+-i La recherche ignore la différence entre les majuscules et minuscules.
+-n Affiche chaque ligne trouvée avec son numéro de ligne.
+Expressions régulières
+Lesexpressionsrégulièressontutiliséesparplusieurscommandes enparticulierlacommande
+grep. Un caractère ordinaire se désigne parlui-mêmemaisl’expression régulière peut aussi
+contenir des caractères spéciaux.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI Salem 23
+
+Tableau : Spécification de certaines expressions régulières
+
+Caractère Signification
+[...] Plage de caractères permis à cet emplacement.
+[^...] Les caractères mentionnés sont interdits à cet emplacement, tous les autres, non
+
+placés entre les crochets étant permis.
+. Désigne n’importe quel caractère.
+* Le * est un signe de répétition. Il agitsurle caractère placé devant l’étoile. Exemple :
+
+x* désigne 0 ou plusieurs caractères x successives.
+
++ Le + est un signe de répétition. Il agit sur le caractère placé devant. Exemple : x+
+
+désigne 1 ou plusieurs caractères x successives.
+
+^ Quandlesigne^estplacéaudébutdumodèle_de_critère,greprechercheleslignesqui
+commencent par les chaînes de caractères décrites par le modèle_de_critère.
+
+$ Placé en fin du modèle de critère, il désigne une fin de ligne.
+\ Suivi d’un autre caractère, il désigne ce caractère. Il permet d’enleverle sensspécial
+
+des caractères * . \ [ ] $.
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI
+SALEM
+
+24
+
+Exercice
+On considère le fichier Fleurs :
+
+a. Rechercher dans le fichier Fleurs les lignes qui commencent par une lettre entre L et O .
+b. Rechercher dans le fichier Fleurs les lignes qui commencent par une voyelle.
+c. Rechercher dans le fichier Fleursles lignes qui commencent par une lettre non voyelle .
+d. Rechercher dansle fichier Fleursleslignes qui commencent par un caractère quelconque et le
+second caractère est le caractère o.
+e. Rechercher dans le fichier Fleurs les lignes qui se terminent par « se ».
+f. Rechercher dans le fichier Fleursleslignes qui ne commencent pas par M (l’option -v).
+g. Rechercher les lignes qui ne commencent pas par M et afficher leur nombre seulement.
+
+Solution
+a.
+
+b.
+^ab : désigne la chaîne ab placée en début de ligne.
+[0-9] : désigne un chiffre quelconque.
+[adh-lA-Z] : désigne la lettre a ou la lettre d ou une lettre minuscule entre h et l, ou une
+lettre majuscule.
+[^0-9] : désigne un caractère qui n’est pas un chiffre.
+^\. : désigne une ligne qui commence par un point.
+
+cat Fleurs
+Rose
+Jasmin
+Lilles
+Orchidées
+Marguerites
+Camomilles
+
+grep ^[O-L] Fleurs
+Lilles
+Orchidées
+Marguerites
+
+grep ^[aeiou] Fleurs
+Orchidées
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 25
+c.
+
+d.
+
+e.
+
+f.
+
+g.
+
+2.11.2 Tri dans un fichier (sort)
+sort [options] [+Pos1] [-Pos2] [Fichier...]
+
+La commande sort effectue un tri deslignes d’un ensemble de fichiers(l’entrée standard par
+défaut). Leslignessont triéesselon la valeur d’une clé de triformé d’une ou plusieurs champs
+extraits de chaque ligne. Par défaut, le trise faitsurleslignesselon l’ordre lexicographique et
+selon l’ordre croisant.
+grep ^[^aeiou] Fleurs
+Rose
+Jasmin
+Lilles
+Marguerites
+Camomilles
+
+grep ^.o Fleurs
+Rose
+
+grep se$ Fleurs
+Rose
+
+grep -v ^p Fleurs
+Rose
+Jasmin
+Lille
+Orchidées
+Camomille
+
+grep -v -c ^M Fleurs
+1
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 26
++pos1 –pos2 permet d’indiquer le début et la fin du colonne de tri. Il indique que la colonne de
+tri commence au champ numéro pos1+1 et se termine a champ numéro pos2+1 (non compris).
+Exemple : +2 -3 désigne le champ numéro 3. +2 -4 désigne les champs 3 et4.
+
+Si –Pos2 est omis, le tri porte de +Pos1 jusqu’à la fin de la ligne.
+L’indication de plusieurs critères de tri est parfaitement possible. Le second critère ne seramis en
+œuvre que si le premier critère ne suffit pas à trier les lignes.
+Tableau : Options de la commande sort
+
+Option Signification
+
+-n
+Effectuer un tri numérique et non lexicographique sur les clés. On peut
+aussi accolerl’option n derrière pos1 si on ne veut trier numériquement
+que certains champs.
+-f
+Ignorer les différences entre les majuscules et minuscules. Toutes les
+minuscules sont converties en majuscules et le tri n’est effectué qu’après.
+-r Inversion de l’ordre de tri, donc tri est par ordre décroissant.
+-tc
+Le caractère « c » aprèsl’option –t est définit comme caractère de séparation
+entre les champs d’une ligne.
+
+Exercice :
+On suppose que le fichier Agenda utilise le séparateur tabulation entre les champs.
+cat Agenda
+Zitouni Sarra 2090 Ariana 71345098
+Skouri Mouna 2080 Tunis 71527860
+Chebbi Moez 1060 Mahdia 73903561
+Azzouna Ahmed 2100 Nabeul 72209189
+
+a. Triez le fichier Agenda d’après les prénoms (le second champ).
+b. TriezlefichierAgendad’aprèslescodespostaux
+c. On veut trier le fichier Agenda selon le prénom (2 éme champ) et en cas d’égalité on effectue
+le tri de la colonne de l’adresse (4 éme champ).
+d. On veut effectuer le tri du fichier /etc/passwd sur le numéro de l’utilisateur. Le séparateur
+utilisé dans /etc/passwd est le deux points « : ».
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 27
+Solution :
+a.
+sort +1 -2 Agenda
+Azzouna Ahmed 2100 Nabeul 72209189
+Skouri Mouna 2080 Tunis 71527860
+ChebbiMoez 1060 Mahdia 73903561
+Zitouni Sarra 2090 Ariana 71345098
+b.
+sort -n +2 -3 Agenda
+ChebbiMoez 1060 Mahdia 73903561
+Skouri Mouna 2080 Tunis 71527860
+Zitouni Sarra 2090 Ariana 71345098
+Azzouna Ahmed 2100 Nabeul 72209189
+
+c.
+sort +1 -2 +3n -4n Agenda
+
+d.
+
+Le tri ne se fait pas correctement si on oublie l’option n à la suite de +2. Ceci parce qu’on veut
+effectuer un tri d’un champ numérique.
+2.11.3 Compter les caractères, les mots, les lignes (wc)
+
+Cette commande affiche le nombre de lignes, de mots, de caractères et le nom de chaque fichier.
+Si des fichiers ne sont pas spécifiés, l’entrée standard est prise par défaut.
+Options
+sort –t: +2n -3n /etc/passwd
+
+wc [options] [fichiers]
+
+-l
+
+-c
+: nombre de lignes seulement
+: nombre de mots seulement
+: nombre de caractèresseulement
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 28
+Exercice
+a. Comptez le nombre de fichiers de /bin
+ls-a /bin |wc –l
+b. Comptez leslignes, mots et caractères de touslesfichiers du répertoire courant dont le
+nom commence par b.
+wc -lwc b*
+2.11.4 Conversion de caractères (tr)
+tr chaîne1 chaîne2
+La commande tr transforme les caractères provenant de l’entrée standard ainsi (les caractères
+contenus dans la première chaîne sont transformés en les caractères correspondants dans la
+seconde chaîne et les autres caractèressont conservéstels quels. Le tout est envoyé versla sortie
+standard.
+
+Exercice
+1. Ecrivez une commande qui permet de convertir le texte lu à partir du clavier(entrée
+standard).
+
+2. Ecrivez une commande qui permet de convertir le texte du fichier /etc/passwd de façon à
+changer chaque minuscule en une majuscule.
+
+cat /etc/passwd |tr "a-z" "A-Z"
+
+2.11.5 Découpage de fichiers (cut)
+La commande grep sélectionne des lignes individuelles dans un fichier ou dans le flux de
+données. On parle dans ce cas de sélection horizontale. La commande cut sert à couper des
+zones dans chaque ligne, donc à effectuer une sélection verticale. cut sélectionne soit des
+tr "aeiou" "AEIOU"
+bonjour
+Ctrl^D
+bOnjOUr
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 29
+colonnes bien précises, que vous souhaitez afficher, soit elle montre des champs séparés les uns
+des autres par des caractères de séparation définis par l’utilisateur.
+Sélection de colonnes
+
+cut -cliste [fichiers.....]
+
+Cette commande découpe un ou plusieurs fichiers (entrée standard par défaut) en sélectionnant
+des intervalles de caractères indiqués à l’aide de l’option -c. Le résultat est envoyé à la sortie
+standard.
+
+Le paramètre liste est une liste de nombresséparés par des virgules avec éventuellement destirets
+pour indiquer un intervalle. Le découpage se fait en se basant sur les numéros de caractères.
+Cette liste indique quels seront les caractères qui seront conservés sur chaque ligne.
+- une colonne individuelle (par exemple –c5)
+- une plage de colonnes (par exemple -c3-10 ou –c8-)
+- une liste de chiffres séparés par des virgules (par exemple –c3,7,9)
+- une combinaison des trois formes précédentes (par exemple -c1-3,7,20-)
+
+Exemples
+1, 3, 8 : désigne les caractères dans les positions 1, 3 et8.
+2-5 , 10 : désigne les caractères dans les positions entre 2 et 5 et la position10.
+-5, 8 : désigne les caractèressitués dansles positions de 1 à 5 et la positions 8.
+3- : désigne les caractères de la position n°3 jusqu’à la fin de la ligne.
+
+Exercice :
+Soit le fichier Mois suivant
+
+a. Ecrivez une commande qui permet d’afficher le premier caractère du fichier Mois.
+cat Mois
+Mois
+Janvier
+Février
+Mars
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 30
+b. Ecrivez une commande qui permet d’afficher les 3 premiers caractères du fichier Mois.
+
+Sélection de champs
+cut [-dx] -fliste [fichier...]
+
+Dans ce cas, le découpage se faitsur des champsindiqués parl’option –f, délimités par un
+délimiteur indiqué par l’option -d.
+Le séparateur par défaut est la marque de tabulation. Pourfixer un autre caractère délimiteur de
+champs, on utilise l’option –d, en plaçant le caractère de séparation derrière l’option –d.
+
+Exercice :
+On considère le fichier adresses qui contient des champs séparés par deux points comme suit :
+
+a. Ecrivez une commande qui permet de sélectionner le 3
+
+ème champ du fichier adresses
+
+cut –c1 Mois
+M
+J
+F
+M
+
+cut –c1-3 Mois
+Moi
+Jan
+Fév
+Mar
+
+cat Adresses
+Mahmoudi:Houssem:9000:Gabes
+Belguessem:Ghassen:5090:Gafsa
+Mediouni:Maha:3080:Beja
+
+cut -d: -f3
+9000
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 31
+b. Ecrivez une commande qui permet d’afficher le 2
+ème et 4
+ème champ du fichier adresses
+
+2.11.6 Comparaison du contenu de 2 fichiers
+2.11.6.1 La commande diff
+La commande diff permet d’indiquer quelles sont les lignes qu’on doit changer dans le premier
+fichier pour qu’il sera identique au second fichier.
+diff fichier1 fichier2
+
+2.11.6.2 Commande cmp
+
+cmp [-s] fichier1 fichier2
+
+La commande cmp affiche le premier octet différent dans les 2 fichiers.
+L’option –s permet de retourner un code de retour. En effet, elle retourne 0 si les deux fichiers
+sont identiques, la valeur 1 s’ils sont différents et 2 s’il a eu une erreur lors de l’exécution de la
+commande.
+Exemple
+cmp fich1 fich2
+fich1 fich2 differ: char 160 line 5
+2.11.7 Extraire le début ou la fin d’un fichier
+2.11.7.1 Début du fichier (head)
+
+head [-n] [fichiers]
+5090
+3080
+
+cut -d: -f2,4
+Houssem Gabes
+Ghassen Gafsa
+Maha Beja
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 32
+La commande head extrait les n premières lignes de chacun des fichiers (entrée standard par
+défaut). Par défaut la valeur de n est égale à 10.
+2.11.7.2 Fin du fichier (tail)
+
+tail [+/-position] [fichiers]
+
+La commande tail permet de copier la fin du fichier sur la sortie standard à partir de la position
+désignée. La première ligne affichée sur la sortie standard est indiquée par la position qui peut
+être +n (la n
+
+ième ligne du fichier) et qui peut être aussi –n (la n
+
+ième ligne à partir de la fin du fichier).
+
+• position : un nombre qui définit le nombre de lignes à présenter.
+• +position : recopie à partir de la position donnée en partant du début.
+• -position : recopie à partir de la position donnée en partant de la fin.
+
+Exercice :
+Soit le fichier Fruits suivant
+
+a. Afficher les lignes du fichier Fleurs à partir de la deuxième ligne.
+
+b. Afficher les 3 dernières lignes du fichier.
+tail -3 Fleurs
+cat Fruits
+pomme
+poire
+orange
+pamplemousse
+fraise
+banane
+
+tail +2 Fruits
+poire
+orange
+pamplemousse
+fraise
+banane
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 33
+2.11.8 Suppression des doublons (uniq)
+La commande uniq n’affiche qu’un seul exemplaire deslignes de l’entrée standard ou du fichier
+passé en paramètre. Si plusieurslignes consécutivessont identiques, une seule est envoyée versla
+sortie standard. Cette commande ne considère pas deux lignes identiques non consécutives, il
+faut faire un tri préalable en utilisant la commande sort si on veut les prendre en compte.
+
+Exercice :
+Soitle fichierprénomssuivant
+
+a. Ecrivez une commande qui affiche leslignes du fichiers “prénoms” tout en ignorant les
+doubloons
+pamplemousse
+fraise
+banane
+
+cat prénoms
+mohamed
+imene
+Ali
+Anis
+olfa
+safa
+ahmad
+safa
+hajer
+
+uniq prénoms
+mohamed
+imene
+Ali
+Anis
+olfa
+safa
+ahmad
+
+Systèmes d’exploitation – Gestion de Fichiers sous linux
+
+TRABELSI SALEM 34
+b. Triez le fichier selon l’ordre alphabétique
+
+c. Triez le fichier et affichez-le en ignorant les doublons
+sort prénoms
+ahmad
+Ali
+Anis
+imene
+mohamed
+olfa
+safa
+safa
+
+sort prénoms | uniq
+ahmad
+Ali
+Anis
+imene
+mohamed
+olfa
+safa
