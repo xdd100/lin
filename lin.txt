@@ -244,7 +244,22 @@ shell par defaut: bash
 <
 echo << a boucle break si a
 
+
 --------------------------------
+$? : référence la valeur retournée par la dernière commande exécutée.
+$$ : référence le numéro du processus (PID) du shell actif
+$ ! : référence le numéro du processus (PID) du dernier processus lancé en arrière-plan
+$0 : référence le nom de procédure de commande
+$1....$9 : référence la valeur de nième paramètre
+$#: référence le nombre de paramètres d'un fichier de commandes.
+$* : référence la liste de tous les paramètres $1......$9, est utilisé si l’on veut substituer tous les
+arguments sauf le nom de commande ($0).
+$@ : référence la liste des paramètres sous la forme “$1“, “$2“,...., “$9“
+${X}: référence l’argument de numero x
+------------------------------------
+commandes bash
+read
+test
 
 
 
