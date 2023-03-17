@@ -449,7 +449,73 @@ alert("Info du jour : le meuble ne contient que 4 tiroirs et, jusqu'à preuve
 du contraire, les tiroirs négatifs n'existent pas.");
 }
 -----------------------------------------------------------------------------------
+/*var photo=document.getElementById('myimg');
 
+function changephoto1(){
+    var photo=document.getElementById('myimg');
+    photo.src='images/lake.jpg';
+}
+function changephoto2(){
+    var photo=document.getElementById('myimg');
+    photo.src='images/header-bg.jpg';
+} 
+//changer onmouseover le src et l'opacité de l'image
+photo.addEventListener("mouseover",(e)=>{
+    console.log(e);
+    setTimeout(() => {
+
+        e.target.src='images/DD.webp';
+        photo.style.opacity=0.8;
+
+    }, 15000);
+
+}) 
+
+*/
+
+const checkboxParoles = document.getElementById('masquer-paroles');
+
+const divParoles = document.getElementById('paroles');
+
+//lancer un evenement click sur checkbox 
+
+checkboxParoles.addEventListener('click',(e)=>{
+
+    if(e.target.checked){
+        divParoles.style.display='none';//cachée les paroles
+
+    }else{
+        divParoles.style.display='block';
+
+    }
+
+})
+const checkboxRefrain = document.getElementById('masquer-refrains');
+
+let divRefrain= document.getElementsByClassName('refrain'); 
+
+checkboxRefrain.addEventListener('click',function(e){
+
+    for(var i=1;i<divRefrain.length;i++){
+        if(e.target.checked){
+            divRefrain[i].classList.add('hidden');
+        
+        }else{
+            divRefrain[i].classList.remove('hidden');
+        
+        }
+    }
+})
+
+
+
+
+/*var demo=document.getElementById('demo');
+demo.addEventListener('mouseover',(e)=>{
+
+    setTimeout(() => {
+        e.target.style.color="red";
+    }, 15000);
 
 
 
