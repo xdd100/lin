@@ -1,276 +1,454 @@
-UNIX : Uniplexed Information and Computing System.
-
-Est une famille de systèmes d'exploitation multitâche et multi-
-utilisateur.
-
-Le nom « UNIX » est une marque déposée de l'Open Group, qui autorise
-son utilisation pour tous les systèmes certifiés conformes.
-est une famille de systèmes d'exploitation open
-source (format libre) de type Unix fondé sur le noyau Linux
-
-UNIX et Linux sont deux systèmes d'exploitation similaires dans leur fonctionnement, mais il y a quelques différences notables :
-Source du code : Unix est un système d'exploitation propriétaire, tandis que Linux est un système d'exploitation open source.
-Coût : Unix est généralement plus coûteux que Linux, car il nécessite une licence d'utilisation, tandis que Linux est gratuit.
-Gestion des fichiers : Les systèmes de gestion de fichiers de Unix et Linux sont différents. Unix utilise UFS (Unix File System), tandis que Linux utilise Ext4 (Extended File System).
-Interface utilisateur : Les interfaces utilisateur de Unix et de Linux sont différentes, car elles sont développées par des entreprises différentes. Unix utilise généralement une interface de ligne de commande, tandis que Linux dispose de plusieurs environnements de bureau et d'interfaces graphiques.
-Matériel : Les versions d'Unix sont conçues pour fonctionner sur des ordinateurs spécifiques, tandis que Linux peut fonctionner sur une grande variété de matériels différents.
-Historique : Unix est un système d'exploitation plus ancien, qui remonte aux années 1970, tandis que Linux a été développé dans les années 1990.
-Distro: Red Hat, Debian, openSUSE, Fedora, Ubuntu,
-
-
-/bin : répertoire contenant les principales commandes disponibles pour les utilisateurs
-/boot : répertoire contenant les fichiers de démarrage du système contenant le noyau
-/dev : contient les fichiers de périphériques.
-/etc : contient la configuration de systeme.
-/home : contient les répertoires personnels des utilisateurs (optionnel).
-/lib : contient les bibliothèques partagées essentielles et les modules du noyau.
-/mnt : est utilisé comme point de montage pour les systèmes de fichiers montés temporairement.
-/proc : contient un système de fichiers virtuel d'information du noyau et des processus.
-/root : contient le répertoire personnel de l'utilisateur root (optionnel).
-/sbin : contient les binaires système (les binaires qui étaient autrefois mis dans /etc).
-/sys : contient l'état des périphériques (model device) et des sous-systèmes (subsystems).
-/tmp : contient les fichiers temporaires.
-/usr : Ce répertoire est réservé pour l'utilisation du système.
-/var : répertoire contenant lesjournaux systèmes.
-
-
-
-Un fichier est une collection logique d’information. Un système de fichiers est une collection de fichiers.
-Une des fonctions d'un SE est de masquer les spécificités des disques et des autres périphériques
-d'entrées/sorties et d'offrir au programmeur un modèle de manipulation des fichiers agréable et
-indépendant du matériel utilisé.
-
-
-Organisation d’un disque dur:
-Master Boot Record|Partition Système|Partition Données
-
-
-FAT/FAT32/NTFS/exFAT/ext4
-
-. ------- le répertoire courant 
-.. ----- pour désigner le répertoire parent courant 
-~ ----- : pour désigner le répertoire personnel de l’utilisateur 
-
-
-chemin absolu: commence par /
-chemin relaif: ne commence pas par /
-
-TYPES DES FICHIERS:
-Les fichiers normaux
-Les fichiers répertoires (directories en Anglais)
-Les fichiers spéciaux
-Les fichiers liens symboliques
-
-
-d      rwxr-xr-x            7                   user1       group1    3080    Feb 2 04:07                   TP2
-Type   Autorisations        nombre de liens   Propriétaire  Groupe  Taille    Date de dernière modification  Nom du fichier
-
-
-Les I-nodes des fichiers
-Un fichier possède plusieurs informations, telles que le nom, le contenu et d’autres informations comme
-les permissions et les dates des dernières modifications. Ces informations sont sauvegardées dans
--décrite dans /usr/include/sys/inode.h qui contient généralement les champs suivants :
-• le type du fichier (fichier ordinaire, spécial, répertoire,...).
-• les droits d’accès.
-• UID : le propriétaire du fichier.
-• GID : le group à lequel il appartient le propriétaire.
-• la date de dernière modification, la date du dernier accès, la date de création.
-• la taille du fichier en octets.
-• le nombre de liens (un lien d'un fichier est un autre nom de ce fichier),
-• les éléments d'identification du propriétaire et de son groupe,
-• l'adresse physique d'implantation sur disque.
-Remarques :
-o Tout fichier possède son unique i-node.
-o L'i-node contient la totalité des informations sur le fichier, sauf le nom.
-o Les i-nodes sont tous de même taille.
-
-
-
-r : lecture (permet d'explorer ou voir le contenu d'un répertoire ou d'un fichier)
-w : écriture (permet d'ajouter ou supprimer des fichiers ou de modifier le contenu d'un fichier)
-x : exécution (permet d'autoriser l'accès à un répertoire ou d'exécuter un fichier)
-
-------------FIND-------------------
-
--name motif
-Recherche par nom de fichier. Le motif peut utiliser les caractères
-génériques du Shell ?, *, [ ]
-
--type type
-Recherche par type de fichier. f pour le fichier ordinaire, d pour les
-répertoires, b pour lesfichiersspéciaux en mode bloc, c pour lesfichiers
-spéciaux en mode caractère, l pour les liens symboliques.
-
--user utilisateur
-Recherche par propriétaire. Le propriétaire desfichierstrouvés doit être
-l'utilisateur référencé.
-
--group groupe
-Recherche par groupe. Les propriétaires des fichiers trouvés doivent
-être des membres du groupe référencé.
-
--size [+/-]n
-Recherche partaille de fichier. La taille du fichier est exprimée en blocs
-(512octets).Si aprèslataillej'ajoutele caractèrec,la taille seraexprimée
-en octets. Exemple : -size 50c
-
--atime [+/-]n Recherche par date du dernier accès.
--mtime [+/-]n Recherche par date de la dernière modification.
--ctime [+/-]n Recherche par date de création.
-
-
-
--perm mode
-Recherche par autorisations d’accès. Recherche les fichiers dont le
-mode de permission est égal au mode référencé.
-
--perm –mode
-Recherche par autorisations d’accès. Recherche les fichiers qui ont au
-moins les autorisations décrite le mode.
-
--links [+/-]n 
-Recherche par nombre de liens pour les fichiers.
-
--inum [+/-]n 
-Recherche par numéro d’index pour les fichiers.
-
--newer nomfichier
-Recherche des fichiers plus récents que le fichier passé en référence
-(nomfichier).
-
-
-La notation [+/-]n indique un entier ayant les 3 formes suivantes:
-• +n : indique que toute valeur supérieure à n est valide.
-• n : indique que la valeur doit être exactement égale à n.
-• -n : indique que toute valeur inférieure à n est valide.
-
-On peut combiner les critères avec des opérateurs logiques :
-• critère1 critère2 ou critère1 -a critère2 correspond au et logique,
-• !critère non logique,
-• \(critère1 -o critère2\) ou logique,
-
-find est recursive
-
-L’option –print
-La commande find doit être utilisée avec l'option -print.
-
-L’option –exec
-L’option –exec permet d’exécuter une commande surlesfichiers qui vérifient les critères de
-sélection.
--exec commande {} \;
-
------------------------------------------------------------------------------------------------
-
-regex grep:
-^ début de ligne
-- . un caractère quelconque
-- $ fin de ligne
-- x* zéro ou plus d'occurrences du caractère x
-- x+ une ou plus occurrences du caractère x
-- x? une occurrence unique du caractère x
-- [...] plage de caractères permis
-- [^...] plage de caractères interdits
-\{n\} pour définir le nombre de répétition n du caractère placé devant
-* Le * est un signe de répétition. Il agitsurle caractère placé devant l’étoile. Exemple :
-
-^ Quandlesigne^estplacéaudébutdumodèle_de_critère,greprechercheleslignesqui
-commencent par les chaînes de caractères décrites par le modèle_de_critère.
-
-$ Placé en fin du modèle de critère, il désigne une fin de ligne.
-\ Suivi d’un autre caractère, il désigne ce caractère. Il permet d’enleverle sensspécial
-
-des caractères * . \ [ ] $.
-
-^ab : désigne la chaîne ab placée en début de ligne.
-[0-9] : désigne un chiffre quelconque.
-[adh-lA-Z] : désigne la lettre a ou la lettre d ou une lettre minuscule entre h et l, ou une
-lettre majuscule.
-[^0-9] : désigne un caractère qui n’est pas un chiffre.
-^\. : désigne une ligne qui commence par un point.
---------------------------------------CUT-------------------------------------------------
-Cette liste indique quels seront les caractères qui seront conservés sur chaque ligne.
-- une colonne individuelle (par exemple –c5)
-- une plage de colonnes (par exemple -c3-10 ou –c8-)
-- une liste de chiffres séparés par des virgules (par exemple –c3,7,9)
-- une combinaison des trois formes précédentes (par exemple -c1-3,7,20-)
-
-Exemples
-1, 3, 8 : désigne les caractères dans les positions 1, 3 et8.
-2-5 , 10 : désigne les caractères dans les positions entre 2 et 5 et la position10.
--5, 8 : désigne les caractèressitués dansles positions de 1 à 5 et la positions 8.
-3- : désigne les caractères de la position n°3 jusqu’à la fin de la ligne.
----------------------------------------------------------------------------------------------------------
-useradd
-usermod
-userdel
-passwd
-
-date
-sudo -i
-more
-file
-ln
-mv
-rm
-du
-wc
-cat
-head/tail
-uniq
-sort
-tr
-cut
-diff
-cmp
-free
-
-find/locate (-print - exec- -ok)
-grep
-
-droits pars defauts: 666 fichier / 777 repertoires
-chmod
-umask
-chown
-chgroup
-----------------------------
-mot de passe stockeé dans /etc/shadow forme crypte en SHA
-cat /etc/group: GID de grouo
-cat /etc/passwd: UID/GID de user
-2>&1 : capturer la sortie standard et sortie d'erreur
-on peut utiliser NTFS/FAT
-shell par defaut: bash
->> append
-> overwrite
-<
-echo << a boucle break si a
-
-
---------------------------------
-$? : référence la valeur retournée par la dernière commande exécutée.
-$$ : référence le numéro du processus (PID) du shell actif
-$ ! : référence le numéro du processus (PID) du dernier processus lancé en arrière-plan
-$0 : référence le nom de procédure de commande
-$1....$9 : référence la valeur de nième paramètre
-$#: référence le nombre de paramètres d'un fichier de commandes.
-$* : référence la liste de tous les paramètres $1......$9, est utilisé si l’on veut substituer tous les
-arguments sauf le nom de commande ($0).
-$@ : référence la liste des paramètres sous la forme “$1“, “$2“,...., “$9“
-${X}: référence l’argument de numero x
-------------------------------------
-commandes bash
-read
-test
-
-
-
-
-
+-----------------------------------------------------------------------
+history -c
+history -w
 history -c && history -w
+-----------------------------------------------------------------------
+function somme(x,y)
+    {
+        return x+y;
+    }
 
 
 
+function calculator()
+    {
+        var nbr1 =parseInt((document.getElementById('txt1')).value);
+        var nbr2 =parseInt((document.getElementById('txt2')).value);
+        var result=somme(nbr1,nbr2);
+        console.log(result);
+        alert(result);
+    }
 
 
+function eventDiv() 
+    {
+        const mydiv = document.getElementById("mydiv");
+        mydiv.onclick=function(e){clique(e.target);};
+       mydiv.onmouseover=function(e){survoler(e.target);};
+       mydiv.onmouseleave=function(e){quitter(e.target);};
+
+    }
+
+
+    function clique() 
+    {
+        mydiv.style.backgroundColor="blue";
+    }
+
+    function survoler(mydiv) 
+    {
+        mydiv.style.backgroundColor="pink";
+    }
+
+    function quitter(mydiv) 
+    {
+        mydiv.style.backgroundColor="red";
+    }
+--------------------------------------------------------------------
+    function turnlightOff(){
+        var photo=document.getElementById('myphoto');
+        photo.src='images/light_off.gif';
+    }
+    function pair(){
+        var tab=[2,3,4,5,8];
+        for(var i=0;i<tab.length;i++){
+            if(tab[i]%2==0){
+                alert(tab[i]);
+            }
+        }
+    }
+    function echange(){
+        var euro=300;
+        var convert=3.3;
+        var montant=euro*convert;
+        alert("le montant "+euro+" euro =="+montant+"dinar");
+    }
+    function PromptDialog(){
+        var euro=prompt("saisir le montant en euro");
+        var convert=prompt("Euro en dinar","3.3");
+        var  montant=euro*convert;
+        if(montant!=''){
+            alert("le montant "+euro+" euro=="+montant+"dinar");
+        }else{
+            alert("merci de remplir les champs");
+        }
+    }
+    function moyenne(){
+        var note1=prompt("saisir votre note de ds");
+        var note2=prompt("saisir votre note de l'examen");
+        var result=(note1*0.3)+(note2*0.7);
+        if(result!=''){
+            alert("votre moyenne est "+result);
+        }else{
+            alert("merci de saisir les notes");
+        }
+
+    }
+    function Confirmdailog(){
+        var msg=confirm("voulez_vous continuer!");
+        if((msg)==true)
+        {
+            alert("Ok leçon suivant");
+        }else{
+            alert("bye!!");
+        }
+
+    }
+------------------------------------------------------------------------------------------
+    
+    const navigation=document.querySelector("nav");
+window.addEventListener('scroll',()=>{
+    if(window.scrollY>630){
+        navigation.classList.add('anim-nav');
+    }else{
+        navigation.classList.remove('anim-nav');
+    }
+
+})
+
+
+const title = document.querySelector("#title");
+title.addEventListener("mouseover",(e)=>{
+  e.target.style.color = "darkred";
+});
+title.addEventListener("mouseout",(e)=>{
+  e.target.style.color = "red";
+
+setTimeout(()=>{
+    e.target.style.color="red"
+},500);
+},false);
+
+
+window.addEventListener('click',(e)=>
+{
+    console.log(e);
+const rond=document.createElement('div');
+rond.className='clickAnim';
+rond.style.top='${e.pageY - 50}px';
+rond.style.left='${e.pageX - 50}px';
+document.body.appendChild(rond);
+
+setTimeout(()=>
+{
+    rond.remove();
+},1500);
+})
+
+
+
+const vinput = document.querySelector("input");
+window.addEventListener('input',()=>{
+if(vinput.value.length<=3){
+    vinput.style.borderColor="red";
+}else{
+vinput.style.borderColor="green";
+}
+
+
+})
+-------------------------------------------------------------------------------------------
+function validateForm() {
+    const username = document.querySelector('#username');
+const password = document.querySelector('#password');
+
+
+if ((username.value =="") & (password.value =="") ) 
+{
+    alert("Saisir votre nom et mot de passe");
+    username.focus();
+    username.style.borderColor = "red";
+    password.focus();
+    password.style.borderColor = "red";
+    return false;
+}
+
+
+else if (username.value =="") {
+    alert("Saisir votre nom.");
+    username.focus();
+    username.style.borderColor = "red";
+    return false;
+}
+else if (password.value =="") {
+    alert("Saisir votre mot de passe.");
+    password.focus();
+    username.style.borderColor = "red";
+    return false;
+}
+
+else
+{
+    alert("Bonjour " + username.value);
+    username.style.borderColor = "green";
+    username.style.borderColor = "green";
+    return true;
+}
+}
+---------------------------------------------------------------------------
+
+function validateForm() {
+    const name = document.querySelector('#Nom');
+    const adress = document.querySelector('#adresse');
+    const email = document.querySelector('#E-mail');
+    const password = document.querySelector('#pass');
+    const repeat = document.querySelector('#repeat');
+    const phone = document.querySelector('#Tel');
+    const book = document.querySelector('#Sujet');
+    const comment = document.querySelector('#commentaire');
+
+    if (name.value =="") {
+        alert("Saisir votre nom.");
+        name.focus();
+        return false;
+    }
+    else if (adresse.value =="") {
+        alert("Saisir votre adresse.");
+        adress.focus();
+        return false;
+    }
+    else if (email.value =="") {
+        alert("Saisir votre email.");
+        email.focus();
+        return false;
+    }
+    else if ((email.value.indexOf("@",0)<0) & (email.value.indexOf(".",0)<0))
+    {
+        alert("Adresse mail invalide!");
+        email.focus();
+        return false;   
+    }
+    else if (email.value.indexOf(".",0)<0)
+    {
+        alert("Adresse mail invalide!");
+        email.focus();
+        return false;
+    }
+    else if (password.value =="") {
+        alert("Saisir votre pass.");
+        password.focus();
+        return false;
+    }
+
+    else if (repeat.value =="") {
+        alert("Saisir votre pass un autre fois.");
+        repeat.focus();
+        return false;
+    }
+    else if (pass.value != repeat.value) {
+        alert("password not the same!");
+        password.focus();
+        repeat.focus();
+        return false ;
+    }
+    else if (phone.value =="") {
+        alert("Saisir votre num.");
+        phone.focus();
+        return false;
+    }
+    else if (phone.value.length != 13) {
+        alert("13 chiffres requis");
+        phone.focus();
+        return false ;
+    }
+    else if (book.value =="") {
+        alert("Saisir votre sujet.");
+        book.focus();
+        return false;
+    }
+    else if (comment.value =="") {
+        alert("Saisir votre commentaire.");
+        comment.focus();
+        return false;
+    }
+
+    else if (book.selectedIndex < 1) 
+    {
+        alert("Choisir un livre");
+        return false;
+    }
+
+    if (comment.value.length < 8) {
+        comment.style.borderColor = "red";
+        alert("commentaire plus que 8 caractères.");
+        return false;
+    }
+   
+    else
+    {
+        return true;
+    }
+----------------------------------------------------------------------------------------------
+function srcchange() {
+    var myphoto=document.getElementById('myphoto');
+    myphoto.src = 'image/rick.jpg';
+    setInterval(srcchange(),100000);
+}
+
+
+
+function srcchange() {
+    var myphoto=document.getElementById('myphoto');
+    myphoto.src = '/image/rick.jpg';
+    setInterval(srcchange(),100000);
+}
+-------------------------------------------------------------------------------------------------
+const masquerRefrains = document.getElementById("masquer-refrains");
+const masquerParoles = document.getElementById("masquer-paroles");
+const hook = document.querySelector(".hook");
+const paroles = document.querySelectorAll("#paroles p:not(.hook)");
+
+
+masquerRefrains.addEventListener("change", () => {
+    if (masquerRefrains.checked) {
+      hook.classList.add("hidden");
+      refrain.classList.add("hidden");
+    } else {
+      hook.classList.remove("hidden");
+      refrain.classList.remove("hidden");
+    }
+  });
+  
+
+  masquerParoles.addEventListener("change", () => {
+    if (masquerParoles.checked) {
+      paroles.forEach(paroles => paroles.classList.add("hidden"));
+    } else {
+      paroles.forEach(paroles => paroles.classList.remove("hidden"));
+    }
+  });
+--------------------------------------------------------------------------------------------------------
+----------------------------------------CLASSES-------------------------------------------------
+class Car {
+    constructor(name,year)
+    {
+        this.name = name;
+        this.year = year;
+    }
+
+    age(x) 
+    {
+        return x - this.year;
+    }
+}
+
+let date = new Date();
+let year = date.getFullYear();
+
+
+
+let myCar = new Car("Ford", 2014);
+
+document.getElementById("car").innerHTML = myCar.name + " " + myCar.year;
+
+
+document.getElementById("cemo").innerHTML = "My Car is" + myCar.age(year) + "years old.";
+
+
+class Etudiant {
+  constructor(note1, note2) {
+    this.note1 = note1;
+    this.note2 = note2;
+  }
+  average() {
+    return (this.note1 + this.note2) / 2;
+  }
+}
+
+let etudiant1 = new Etudiant(12, 15);
+
+
+var module = new Object();
+module.Nom = "igl";
+module.Coefficient = 5;
+module.credits = function() {
+  return this.Coefficient * 15;
+};
+---------------------------------------------------------------------------------------------------------
+function Personne(nom,age) {
+    this.nom = nom;
+    this.age = age;
+    console.log('Nouvel object Personne créé');
+}
+    var Personne1 = new Personne('Alice',28);
+    var Personne2 = new Personne('Bob',32);
+
+
+    console.log('personne 1 est ' + Personne1.nom + ' /Age: ' +Personne1.age);
+    console.log('personne 2 est ' + Personne2.nom + ' /Age: ' +Personne2.age);
+----------------------------------------------------------------------------------------------------------
+class Calcul {
+    constructor(nombre1, nombre2) {
+    this.nombre1 = nombre1;
+    this.nombre2 = nombre2;
+    }
+    
+    add() {
+    alert(this.nombre1 + this.nombre2);
+    }
+    
+    multiple() {
+    alert(this.nombre1 * this.nombre2);
+    }
+    }
+    
+    function lanceCalculAdd() {
+    const nombre1 = parseFloat(document.getElementById("nombre1").value);
+    const nombre2 = parseFloat(document.getElementById("nombre2").value);
+    const calcul = new Calcul(nombre1, nombre2);
+    calcul.add();
+    }
+    
+    function lanceCalculMult() {
+   const nombre1 = parseFloat(document.getElementById("nombre1").value);
+   const nombre2 = parseFloat(document.getElementById("nombre2").value);
+   const calcul = new Calcul(nombre1, nombre2);
+    calcul.multiple();
+    }
+    
+   document.getElementById("boutonAddition").addEventListener("click", lanceCalculAdd);
+   document.getElementById("boutonMultiplication").addEventListener("click", lanceCalculMult);
+   document.getElementById("proptadd").addEventListener("click", proptadd);
+   function proptadd(){
+       var num1=prompt('donner le numero 1');
+       var num2=prompt('donner le numero 2');
+       var resultats= (num1+num2);
+       console.log('la resulta daddition est '+resultats)
+   }
+   ----------------------------------------------------------------------------------------------------------
+   let pierre={
+    nom: ['pierre','Giraud'],
+    age:29,
+    mail: 'pierre@gmail.com',
+   bonjour: function(){
+    alert('Bonjour, je suis '+this.nom[0]+'j\'ai'+this.age+'ans');
+   }
+};
+document.getElementById('p1').innerHTML='Nom :'+pierre.nom;
+pierre.bonjour();
+-------------------------------------switch--------------------------------------------------------
+var drawer = parseInt(prompt('Choisissez le tiroir à ouvrir (1 à 4) :')); //on
+précise bien le type de la valeur, ici un nombre avec la fonction parseInt()
+switch (drawer) {
+case 1: // on pose chaque cas l'un après l'autre ; on met des apostrophes si
+l'on vérifie des chaînes de caractères au lieu de nombres
+alert('Contient divers outils pour dessiner : du papier, des crayons, etc.');
+break; // on arrête la fonction pour passer à un autre cas
+case 2:
+alert('Contient du matériel informatique : des câbles, des composants, etc.');
+break;
+case 3:
+alert('Ah ? Ce tiroir est fermé à clé ! Dommage !');
+break;
+case 4:
+alert('Contient des vêtements : des chemises, des pantalons, etc.');
+break;
+default: // on pose une autre possibilité, pour gérer une erreur de
+l'utilisateur
+alert("Info du jour : le meuble ne contient que 4 tiroirs et, jusqu'à preuve
+du contraire, les tiroirs négatifs n'existent pas.");
+}
+-----------------------------------------------------------------------------------
 
 
 
